@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PreOrder BST — Visualizador</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="1index.css" />
+</head>
+
+<body>
+    <!-- ══════════════ SIDEBAR ══════════════ -->
+    <aside class="po-sidebar">
+        <div class="po-brand">
+            <span class="po-brand-icon">⟨T⟩</span>
+            <div>
+                <div class="po-brand-title">PreOrder BST</div>
+                <div class="po-brand-sub">Árbol Binario de Búsqueda</div>
+            </div>
+        </div>
+        <hr class="po-divider" />
+        <!-- Insertar -->
+        <section class="po-panel">
+            <div class="po-panel-label">
+                <i class="bi bi-plus-circle"></i>Insertar nodo
+            </div>
+            <div class="po-input-row">
+                <input type="number" id="inputInsertar" class="po-input" placeholder="Valor…" min="-999" max="999" />
+                <button id="btnInsertar" class="po-btn po-btn-insert">
+                    <i class="bi bi-plus-lg"></i>
+                </button>
+            </div>
+            <div id="msgDuplicado" class="po-msg po-msg-warn" style="display:none">
+                <i class="bi bi-exclamation-circle"></i>Ese valor ya existe en el árbol.
+            </div>
+        </section>
+        <section class="po-panel">
+            <div class="po-panel-label">
+                <i class="bi bi-plus-circle"></i>Recorrido
+            </div>
+            <div class="po-input-row">
+                <button id="recorrido" class="po-btn po-btn-insert">
+                    Mostrar recorrido
+                </button>
+            </div>
+        </section>
+        <hr class="po-divider" />
+        <!-- Buscar -->
+        <section class="po-panel">
+            <div class="po-panel-label">
+                <i class="bi bi-search"></i>Buscar nodo
+            </div>
+            <div class="po-input-row">
+                <input type="number" id="inputBuscar" class="po-input" placeholder="Valor…" min="-999" max="999" />
+                <button id="btnBuscar" class="po-btn po-btn-search">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+            <div id="msgEncontrado" class="po-msg po-msg-found" style="display:none">
+                <i class="bi bi-check-circle"></i>
+                Nodo <strong id="valEncontrado">—</strong> encontrado.
+                Recorrido: <span id="pasosBusqueda" class="po-steps">—</span> pasos
+            </div>
+            <div id="msgNoEncontrado" class="po-msg po-msg-notfound" style="display:none">
+                <i class="bi bi-x-circle"></i>Valor no encontrado en el árbol.
+            </div>
+            <button id="btnLimpiarBusqueda" class="po-btn-ghost" style="display:none; width:100%; margin-top:.5rem">
+                <i class="bi bi-arrow-counterclockwise"></i>Limpiar búsqueda
+            </button>
+        </section>
+        <hr class="po-divider" />
+        <!-- PreOrder tape -->
+        <section class="po-panel">
+            <div class="po-panel-label">
+                <i class="bi bi-list-ol"></i>Recorrido PreOrder
+            </div>
+            <div class="po-legend-steps">
+                <div class="po-legend-step">
+                    <span class="po-legend-dot po-dot-root"></span><span>Raíz primero</span>
+                </div>
+                <div class="po-legend-step">
+                    <span class="po-legend-dot po-dot-left"></span><span>Luego izquierda</span>
+                </div>
+                <div class="po-legend-step">
+                    <span class="po-legend-dot po-dot-right"></span><span>Luego derecha</span>
+                </div>
+            </div>
+            <div class="po-preorder-tape" id="preorderTape">
+                <span class="tape-empty">—</span>
+            </div>
+        </section>
+        <hr class="po-divider" />
+        <!-- Estadísticas -->
+        <section class="po-panel">
+            <div class="po-panel-label">
+                <i class="bi bi-bar-chart"></i>Estadísticas
+            </div>
+            <div class="po-stats-grid">
+                <div class="po-stat">
+                    <span class="po-stat-val" id="statNodos">0</span>
+                    <span class="po-stat-label">Nodos</span>
+                </div>
+                <div class="po-stat">
+                    <span class="po-stat-val" id="statAltura">0</span>
+                    <span class="po-stat-label">Altura</span>
+                </div>
+                <div class="po-stat">
+                    <span class="po-stat-val" id="statMin">—</span>
+                    <span class="po-stat-label">Mínimo</span>
+                </div>
+                <div class="po-stat">
+                    <span class="po-stat-val" id="statMax">—</span>
+                    <span class="po-stat-label">Máximo</span>
+                </div>
+            </div>
+        </section>
+        <hr class="po-divider" />
+        <button id="btnLimpiarArbol" class="po-btn-danger">
+            <i class="bi bi-trash3"></i>Vaciar árbol
+        </button>
+        <!-- Leyenda de colores -->
+        <div class="po-color-legend">
+            <div class="po-color-legend-title">Colores de búsqueda</div>
+            <div class="po-color-item">
+                <span class="po-color-dot po-color-found"></span><span>Nodo encontrado</span>
+            </div>
+            <div class="po-color-item">
+                <span class="po-color-dot po-color-path"></span><span>Camino recorrido</span>
+            </div>
+            <div class="po-color-item">
+                <span class="po-color-dot po-color-normal"></span><span>Nodo normal</span>
+            </div>
+        </div>
+    </aside>
+    <!-- ══════════════ CANVAS ══════════════ -->
+    <main class="po-canvas">
+        <div class="po-tree-viewport">
+            <div class="po-tree-wrap" id="treeWrap">
+                <div id="tree"></div>
+            </div>
+        </div>
+    </main>
+    <script src="./1index.js"></script>
+</body>
+
+</html>

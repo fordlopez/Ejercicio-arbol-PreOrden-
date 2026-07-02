@@ -1,0 +1,857 @@
+:root {
+    --bg: #0e0f14;
+    --surface: #161820;
+    --surface-2: #1d1f2b;
+    --surface-3: #252836;
+    --border: rgba(255, 255, 255, .08);
+    --border-soft: rgba(255, 255, 255, .04);
+    --text: #dde1f0;
+    --text-muted: #565c7a;
+    --text-dim: #8891b0;
+    --accent: #00d4ff;
+    --accent-dim: rgba(0, 212, 255, .12);
+    --accent-glow: rgba(0, 212, 255, .25);
+    --found: #ff9f1c;
+    --found-bg: rgba(255, 159, 28, .15);
+    --found-glow: rgba(255, 159, 28, .35);
+    --path: #6c8cff;
+    --path-bg: rgba(108, 140, 255, .14);
+    --path-glow: rgba(108, 140, 255, .3);
+    --new: #34d399;
+    --new-bg: rgba(52, 211, 153, .13);
+    --sidebar-w: 300px;
+    --toolbar-h: 52px;
+    --radius: 10px;
+    --radius-sm: 7px;
+    --font-mono: 'Space Mono', monospace;
+    --font-body: 'Inter', sans-serif;
+    --shadow: 0 4px 24px rgba(0, 0, 0, .5);
+}
+
+/* ── Reset ── */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: .9375rem;
+    line-height: 1.55;
+    display: flex;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SIDEBAR
+   ═══════════════════════════════════════════════════════════ */
+.po-sidebar {
+    width: var(--sidebar-w);
+    flex-shrink: 0;
+    height: 100vh;
+    overflow-y: auto;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 1.25rem 1rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: .1rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--surface-3) transparent;
+}
+
+.po-sidebar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.po-sidebar::-webkit-scrollbar-thumb {
+    background: var(--surface-3);
+    border-radius: 2px;
+}
+
+/* Brand */
+.po-brand {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: .3rem 0 .6rem;
+}
+
+.po-brand-icon {
+    font-family: var(--font-mono);
+    font-size: 1.3rem;
+    color: var(--accent);
+    background: var(--accent-dim);
+    border: 1px solid rgba(0, 212, 255, .2);
+    border-radius: var(--radius-sm);
+    padding: .25rem .5rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.po-brand-title {
+    font-family: var(--font-mono);
+    font-size: .95rem;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.po-brand-sub {
+    font-size: .7rem;
+    color: var(--text-muted);
+}
+
+.po-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: .55rem 0;
+}
+
+.po-panel {
+    padding: .45rem 0;
+}
+
+.po-panel-label {
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: .6rem;
+    display: flex;
+    align-items: center;
+    gap: .45rem;
+}
+
+.po-panel-label i {
+    color: var(--accent);
+    font-size: .85rem;
+}
+
+/* Input row */
+.po-input-row {
+    display: flex;
+    gap: .5rem;
+}
+
+.po-input {
+    flex: 1;
+    min-width: 0;
+    /* FIX: evita que el input desborde el sidebar */
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: .9rem;
+    padding: .55rem .75rem;
+    transition: border-color .18s, box-shadow .18s;
+    outline: none;
+    -moz-appearance: textfield;
+}
+
+.po-input::-webkit-outer-spin-button,
+.po-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+.po-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-dim);
+}
+
+.po-input::placeholder {
+    color: var(--text-muted);
+}
+
+/* Botones */
+.po-btn {
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: .55rem .8rem;
+    font-size: .9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity .18s, transform .12s, box-shadow .18s;
+    flex-shrink: 0;
+}
+
+.po-btn:hover {
+    opacity: .88;
+    transform: translateY(-1px);
+}
+
+.po-btn:active {
+    transform: translateY(0);
+}
+
+.po-btn-insert {
+    background: var(--accent);
+    color: #0e0f14;
+    font-weight: 700;
+}
+
+.po-btn-insert:hover {
+    box-shadow: 0 4px 14px var(--accent-glow);
+}
+
+.po-btn-search {
+    background: var(--surface-3);
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+}
+
+.po-btn-search:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+.po-btn-ghost {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    font-family: var(--font-body);
+    font-size: .78rem;
+    padding: .45rem .75rem;
+    cursor: pointer;
+    transition: border-color .18s, color .18s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .35rem;
+}
+
+.po-btn-ghost:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.po-btn-danger {
+    width: 100%;
+    background: rgba(255, 99, 99, .08);
+    border: 1px solid rgba(255, 99, 99, .2);
+    border-radius: var(--radius-sm);
+    color: #ff6363;
+    font-family: var(--font-body);
+    font-size: .82rem;
+    font-weight: 600;
+    padding: .6rem 1rem;
+    cursor: pointer;
+    transition: background .18s, border-color .18s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .45rem;
+}
+
+.po-btn-danger:hover {
+    background: rgba(255, 99, 99, .16);
+    border-color: rgba(255, 99, 99, .4);
+}
+
+/* Mensajes */
+.po-msg {
+    font-size: .78rem;
+    padding: .45rem .7rem;
+    border-radius: var(--radius-sm);
+    margin-top: .5rem;
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    flex-wrap: wrap;
+}
+
+.po-msg-warn {
+    background: rgba(255, 200, 50, .08);
+    border: 1px solid rgba(255, 200, 50, .2);
+    color: #ffcd38;
+}
+
+.po-msg-found {
+    background: var(--found-bg);
+    border: 1px solid rgba(255, 159, 28, .25);
+    color: var(--found);
+}
+
+.po-msg-notfound {
+    background: rgba(255, 80, 80, .08);
+    border: 1px solid rgba(255, 80, 80, .2);
+    color: #ff6363;
+}
+
+.po-steps {
+    font-family: var(--font-mono);
+    font-size: .82rem;
+    color: var(--accent);
+}
+
+/* Tape preorder */
+.po-preorder-tape {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: .55rem .75rem;
+    min-height: 2.2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .3rem;
+    align-items: center;
+}
+
+.tape-empty {
+    font-family: var(--font-mono);
+    font-size: .8rem;
+    color: var(--text-muted);
+}
+
+.po-tape-chip {
+    font-family: var(--font-mono);
+    font-size: .74rem;
+    background: var(--surface-3);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    border-radius: 4px;
+    padding: .15em .5em;
+    transition: background .2s, color .2s, transform .2s;
+}
+
+.po-tape-chip.po-tape-found,
+.po-tape-chip.po-tape-path {
+    background: var(--found-bg);
+    border-color: rgba(255, 159, 28, .35);
+    color: var(--found);
+}
+
+/* FIX: faltaba el estilo para el chip activo durante animatePreorder() */
+.po-tape-chip.po-tape-active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #0e0f14;
+}
+
+/* Leyenda preorder */
+.po-legend-steps {
+    display: flex;
+    flex-direction: column;
+    gap: .3rem;
+    margin-bottom: .65rem;
+}
+
+.po-legend-step {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    font-size: .75rem;
+    color: var(--text-dim);
+}
+
+.po-legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.po-dot-root {
+    background: var(--found);
+}
+
+.po-dot-left {
+    background: var(--path);
+}
+
+.po-dot-right {
+    background: var(--accent);
+}
+
+/* Stats */
+.po-stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .45rem;
+}
+
+.po-stat {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: .55rem .7rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .1rem;
+}
+
+.po-stat-val {
+    font-family: var(--font-mono);
+    font-size: 1.15rem;
+    color: var(--accent);
+    line-height: 1;
+}
+
+.po-stat-label {
+    font-size: .64rem;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--text-muted);
+}
+
+/* Leyenda de colores */
+.po-color-legend {
+    padding: .5rem 0 0;
+}
+
+.po-color-legend-title {
+    font-size: .68rem;
+    text-transform: uppercase;
+    letter-spacing: .09em;
+    color: var(--text-muted);
+    margin-bottom: .5rem;
+}
+
+.po-color-item {
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    font-size: .76rem;
+    color: var(--text-dim);
+    margin-bottom: .3rem;
+}
+
+.po-color-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.po-color-found,
+.po-color-path {
+    background: var(--found);
+}
+
+.po-color-normal {
+    background: var(--text-dim);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CANVAS
+   ═══════════════════════════════════════════════════════════ */
+.po-canvas {
+    flex: 1;
+    min-width: 0;
+    /* FIX: evita que el canvas desborde el body */
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+}
+
+.po-canvas-toolbar {
+    height: var(--toolbar-h);
+    flex-shrink: 0;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.25rem;
+    gap: 1rem;
+}
+
+.po-toolbar-left {
+    display: flex;
+    align-items: baseline;
+    gap: .9rem;
+    min-width: 0;
+    overflow: hidden;
+    /* FIX: evita que el hint desborde en pantallas chicas */
+}
+
+.po-toolbar-label {
+    font-weight: 600;
+    font-size: .85rem;
+    color: var(--text);
+    white-space: nowrap;
+}
+
+.po-toolbar-hint {
+    font-size: .72rem;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.po-toolbar-right {
+    display: flex;
+    gap: .4rem;
+    flex-shrink: 0;
+}
+
+.po-tool-btn {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-dim);
+    font-size: .85rem;
+    padding: .35rem .6rem;
+    cursor: pointer;
+    transition: background .15s, color .15s, border-color .15s;
+    display: flex;
+    align-items: center;
+}
+
+.po-tool-btn:hover {
+    background: var(--surface-3);
+    color: var(--accent);
+    border-color: rgba(0, 212, 255, .25);
+}
+
+/* Viewport */
+.po-tree-viewport {
+    flex: 1;
+    overflow: auto;
+    position: relative;
+    cursor: grab;
+    background-color: var(--bg);
+    background-image:
+        linear-gradient(var(--border-soft) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border-soft) 1px, transparent 1px);
+    background-size: 40px 40px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--surface-3) transparent;
+}
+
+.po-tree-viewport::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.po-tree-viewport::-webkit-scrollbar-thumb {
+    background: var(--surface-3);
+    border-radius: 3px;
+}
+
+.po-tree-viewport:active {
+    cursor: grabbing;
+}
+
+/* Estado vacío */
+.po-empty-canvas {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .9rem;
+    pointer-events: none;
+}
+
+.po-empty-icon {
+    font-size: 3.5rem;
+    color: var(--text-muted);
+    opacity: .35;
+}
+
+.po-empty-title {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text-muted);
+}
+
+.po-empty-sub {
+    font-size: .8rem;
+    color: var(--text-muted);
+    opacity: .6;
+}
+
+/* Wrap del árbol */
+.po-tree-wrap {
+    position: relative;
+    min-width: 100%;
+    min-height: calc(100vh - var(--toolbar-h));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem 1.5rem;
+}
+
+#treeContainer {
+    width: 100%;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   NODOS — Árbol con listas (sin coordenadas)
+   ═══════════════════════════════════════════════════════════ */
+.po-tree-list,
+.po-tree-list ul {
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    position: relative;
+}
+
+.po-tree-list ul {
+    padding-top: 24px;
+}
+
+.po-li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 12px;
+    position: relative;
+}
+
+/* Línea vertical que baja del padre hacia su(s) hijo(s) */
+.po-li>ul::before {
+    content: '';
+    position: absolute;
+    top: -24px;
+    left: 50%;
+    width: 2px;
+    height: 24px;
+    background: rgba(255, 255, 255, .1);
+}
+
+/* Línea horizontal entre hermanos (solo cuando hay 2) */
+.po-li::before,
+.po-li::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 24px;
+    border-top: 2px solid rgba(255, 255, 255, .1);
+}
+
+.po-li::before {
+    right: 50%;
+    border-right: 2px solid rgba(255, 255, 255, .1);
+}
+
+.po-li::after {
+    left: 50%;
+    border-left: 2px solid rgba(255, 255, 255, .1);
+}
+
+/* FIX clave: cuando un nodo es hijo único, no dibujamos las líneas
+   horizontales de "hermano" — la línea vertical del padre ya cae
+   centrada exactamente sobre este único hijo, sin necesitar nodos
+   "placeholder" ni coordenadas. */
+.po-li:only-child::before,
+.po-li:only-child::after {
+    display: none;
+}
+
+.po-li:first-child::before {
+    display: none;
+}
+
+.po-li:last-child::after {
+    display: none;
+}
+
+.po-node-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.po-node-box {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: .82rem;
+    font-weight: 700;
+    border: 2px solid rgba(255, 255, 255, .12);
+    background: var(--surface-2);
+    color: var(--text);
+    position: relative;
+    z-index: 2;
+    transition: background .25s, border-color .25s, box-shadow .25s, transform .15s;
+}
+
+.po-node-wrap:hover .po-node-box {
+    border-color: rgba(0, 212, 255, .4);
+    transform: scale(1.08);
+}
+
+.po-node-label {
+    font-size: .7rem;
+    color: var(--text-muted);
+}
+
+/* Raíz */
+.node-root .po-node-box {
+    width: 60px;
+    height: 60px;
+    font-size: .9rem;
+    border-color: rgba(0, 212, 255, .4);
+    color: var(--accent);
+}
+
+/* Camino recorrido + nodo encontrado — un único color, sin animación */
+.node-path .po-node-box,
+.node-found .po-node-box {
+    border-color: var(--found);
+    background: var(--found-bg);
+    color: var(--found);
+}
+
+.node-path>ul::before,
+.node-found>ul::before {
+    background: var(--found) !important;
+}
+
+.node-path::before,
+.node-path::after,
+.node-found::before,
+.node-found::after {
+    border-color: var(--found) !important;
+}
+
+/* Clases que usa tu JS (crearHTML) para pintar los nodos */
+.nodo {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: .82rem;
+    background: var(--surface-2);
+    color: var(--text);
+    border: 2px solid rgba(255, 255, 255, .12);
+}
+
+.sss,
+.ganador {
+    background: var(--found-bg);
+    border-color: var(--found);
+    color: var(--found);
+}
+
+/* FIX: crearHTML siempre agrega un <ul></ul> aunque el nodo sea
+   hoja (sin hijos). Sin esto quedaba una lineita vertical colgando
+   debajo de cada hoja, apuntando a la nada. */
+.po-li>ul:empty::before {
+    display: none;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVO
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+    body {
+        flex-direction: column;
+        overflow: auto;
+    }
+
+    .po-sidebar {
+        width: 100%;
+        height: auto;
+        max-height: 50vh;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: .8rem;
+        padding: .9rem;
+    }
+
+    .po-brand {
+        flex: 0 0 100%;
+    }
+
+    .po-panel {
+        flex: 1 1 200px;
+    }
+
+    .po-divider {
+        display: none;
+    }
+
+    .po-canvas {
+        height: 50vh;
+    }
+
+    /* FIX responsivo: ocultar hint en móvil para que no se corte */
+    .po-toolbar-hint {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+.nodo {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    /* FALTABA: centra el texto */
+    align-items: center;
+    /* FALTABA */
+    justify-content: center;
+    /* FALTABA */
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: .82rem;
+    background: var(--surface-2);
+    color: var(--text);
+    border: 2px solid rgba(255, 255, 255, .12);
+    position: relative;
+    /* FALTABA */
+    z-index: 2;
+    /* FALTABA */
+}
+
+.camino {
+    background: var(--path-bg);
+    /* CORREGIDO: usa tu variable --path-bg */
+    border-color: var(--path);
+    /* CORREGIDO: usa --path */
+    color: var(--path);
+}
+
+.ganador {
+    background: var(--found-bg);
+    /* CORREGIDO: usa tu variable --found-bg */
+    border-color: var(--found);
+    /* CORREGIDO: usa --found */
+    color: var(--found);
+}
