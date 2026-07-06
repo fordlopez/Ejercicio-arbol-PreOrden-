@@ -1,8 +1,11 @@
+let contador = 0;
+
 class Node {
     constructor(value) {
         this.left = null;
         this.right = null;
         this.value = value;
+        this.id = contador++;
     }
 }
 
@@ -59,7 +62,6 @@ class BinarySearchTree {
     preOrder(node, result = []) {
         if (!node) return result;
 
-
         result.push(node.value);
         this.preOrder(node.left, result);
         this.preOrder(node.right, result);
@@ -72,8 +74,6 @@ class BinarySearchTree {
 let tree = new BinarySearchTree();
 
 
-
-
 ////////////////////////////RENDER DEL ÁRBOL
 function renderTree(tree, path = [], foundValue = null) {
     let tree2 = document.querySelector("#tree");
@@ -81,24 +81,18 @@ function renderTree(tree, path = [], foundValue = null) {
     const container = tree2
 
     if (tree.root == null) {
-
         container.innerHTML = "";
-
-
         return;
     }
 
-
     container.innerHTML = `
 <ul class="po-tree-list">
- <li class="po-li node-root">
+ <li class="po-li node-root ">
 ${crearHTML(tree.root, path, foundValue)}
 </li>
 </ul>
 `;
-
 }
-
 
 function crearHTML(node, path = [], foundValue = null) {
 
@@ -109,7 +103,6 @@ function crearHTML(node, path = [], foundValue = null) {
     let clase = "nodo";
     if (foundValue !== null && node.value === foundValue) {
         clase = "nodo encontrado ganador";
-
     } else if (path.includes(node.value)) {
         clase = "nodo camino ";
     }
@@ -117,8 +110,8 @@ function crearHTML(node, path = [], foundValue = null) {
     return `
 <li class="po-li node-root ">
  
-<div class="${clase} po-node-wrap ">
-<div class="po-node-box">
+<div id="nodo-${node.id}" class="${clase} po-node-wrap ">
+<div >
 ${node.value}
 </div>
 </div>
@@ -132,18 +125,17 @@ ${crearHTML(node.right, path, foundValue)}
  
 </li>
 `;
-
 }
 
 ///don 
 let btnInsertar = document.querySelector("#btnInsertar")
 let btnBuscar = document.querySelector("#btnBuscar")
 let recorrido = document.querySelector("#recorrido")
+let btnLimpiarBusqueda = document.querySelector('#btnLimpiarArbol')
 
 
 /// input
 let input = document.getElementById("inputBuscar");
-
 
 
 ////// UI mensajes
@@ -152,28 +144,27 @@ let msgNoEncontrado = document.querySelector("#msgNoEncontrado")
 let valEncontrado = document.querySelector("#valEncontrado")
 let pasosBusqueda = document.querySelector("#pasosBusqueda")
 
-/* let msgEncontrado2=document.getElementById("msgEncontrado")
-let msgNoEncontrado2=document.getElementById("msgNoEncontrado")
- 
- */
 
 //////////////////////////// CINTA PREORDER
-function updatePreOrder() {
-    const tape = document.querySelector("#preorderTape");
-    if (!tape) return;
-
-    const values = tree.preOrder(tree.root);
-
-    if (!values.length) {
-        tape.innerHTML = '<span class="tape-empty">—</span>';
-        return;
-    }
-
-    tape.innerHTML = values.map((v) => `<span class="po-tape-chip">${v}</span>`).join("");
-}
 
 
-///ejemplo 
+
+btnInsertar.addEventListener("click", () => {
+    let input = document.getElementById("inputInsertar");
+    let value = Number(input.value);
+
+
+    tree.insert(value);
+
+    renderTree(tree);
+
+
+    input.value = "";
+
+    console.log(tree.preOrder(tree.root));
+    console.log(tree);
+});
+
 tree.insert(30);
 tree.insert(10);
 tree.insert(8);
@@ -184,37 +175,16 @@ tree.insert(57);
 
 
 
-btnInsertar.addEventListener("click", () => {
-    const input = document.getElementById("inputInsertar");
-    const value = Number(input.value);
-    /* 
-    if (isNaN(value)) return; */
-
-    tree.insert(value);
-
-    renderTree(tree);
-    updatePreOrder();
-
-    input.value = "";
-    console.log(tree)
-});
-
-/* 
-   BUSCAR (CON ILUMINACIÓN)
- */
-
 btnBuscar.addEventListener("click", () => {
 
+    let value = Number(input.value);
 
-    const value = Number(input.value);
 
-    /* if (isNaN(value)) return;
-     */
 
-    const result = tree.search(value);
+    let result = tree.search(value);
     renderTree(tree, result.path, result.node ? value : null);
 
-    // UI mensajes
+
     if (result.node) {
         msgEncontrado.style.display = "flex";
         msgNoEncontrado.style.display = "none";
@@ -223,18 +193,45 @@ btnBuscar.addEventListener("click", () => {
     } else {
         msgEncontrado.style.display = "none";
         msgNoEncontrado.style.display = "flex";
-
-        /* msgEncontrado2.style.display = "none";
-        msgNoEncontrado2.style.display = "flex"; */
     }
 });
 
 
 recorrido.addEventListener('click', () => {
 
+    let values = tree.preOrder(tree.root);
+
+    if (!values.length) {
+        return;
+    }
+
+    let caminoActual = [];
+
+    values.forEach((valor, indice) => {
+
+        setTimeout(() => {
+
+            caminoActual.push(valor);
+
+
+
+
+            renderTree(tree, caminoActual, valor);
+
+        }, indice * 700);
+    });
+
+
+
+});
+
+
+btnLimpiarBusqueda.addEventListener('click', () => {
+    tree.root = null;
+    renderTree(tree);
+    msgEncontrado.style.display = "none";
+    input.value = "";
 
 })
 
-
 renderTree(tree);
-updatePreOrder();
